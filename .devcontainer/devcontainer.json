@@ -1,7 +1,7 @@
 {
   "name": "Next.js & Supabase E-commerce Dev Container",
   "dockerFile": "./Dockerfile",
-  "forwardPorts": [3000, 8080],
+  "forwardPorts": [3000, 8080], // 3000 for frontend, 8080 for backend
   "remoteUser": "node",
   "runArgs": ["--init"],
   "mounts": [
