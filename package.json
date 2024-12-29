@@ -16,7 +16,8 @@
     "test": "yarn workspace @my-ecommerce/app test",
     "test:backend": "yarn workspace @my-ecommerce/backend test",
     "build": "yarn workspace @my-ecommerce/app build",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "prepare": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^4.0.0"
