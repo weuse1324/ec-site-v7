@@ -1,0 +1,71 @@
+version: "3.9"
+services:
+  app:
+    image: your-docker-registry/app:latest # ビルドしたイメージを指定
+    deploy:
+      replicas: 3 # 3つのレプリカを作成
+      placement:
+        constraints:
+          - node.role == worker
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/ecommerce_db # 適切な値に変更
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} # 適切な値に変更
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY} # 適切な値に変更
+      - BACKEND_URL=http://backend:8080
+    networks:
+      - myapp
+    depends_on:
+      - db
+      - backend
+
+  backend:
+    image: your-docker-registry/backend:latest # ビルドしたイメージを指定
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == worker
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/ecommerce_db # 適切な値に変更
+      - PORT=8080
+    networks:
+      - myapp
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager # マネージャーノードに配置
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ecommerce_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - myapp
+
+volumes:
+  postgres_data:
+
+networks:
+  myapp:
+    name: myapp
+    driver: overlay
