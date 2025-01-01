@@ -1,0 +1,35 @@
+{
+  "name": "ecommerce-project",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "app",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "docker compose up -d",
+    "stop": "docker compose down",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "test": "yarn workspace @my-ecommerce/app test",
+    "test:backend": "yarn workspace @my-ecommerce/backend test",
+    "build": "yarn workspace @my-ecommerce/app build",
+    "postinstall": "husky install",
+    "prepare": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "cypress": "^12.5.1",
+    "husky": "^8.0.3",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "prisma": "^4.0.0"
+  }
+}
